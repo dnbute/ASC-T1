@@ -34,8 +34,8 @@ class Producer(Thread):
         Thread.__init__(self)
         self.products = products
         self.marketplace = marketplace
-        self.republish_wait_time = republish_wait_time
+        self.republish_wait_time = republish_wait_time        
         
 
     def run(self):
-        pass
+        self.id = self.marketplace.register_producer()

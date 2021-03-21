@@ -39,4 +39,4 @@ class Consumer(Thread):
 
 
     def run(self):
-        pass
+        self.cart_id = self.marketplace.new_cart()
