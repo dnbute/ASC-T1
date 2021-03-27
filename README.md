@@ -31,7 +31,7 @@ timp oferind consumatorilor coșurile necesare.
 
 * Toată tema a fost implementată
 * Cea mai grea parte a fost înțelegerea enunțului + deslușirea scheletului
-*Este destul de lentă soluția din punctul meu de vedere însă trece testele
+* Este destul de lentă soluția din punctul meu de vedere însă trece testele
 
 # Resurse utilizate
 
