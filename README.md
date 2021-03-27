@@ -1,41 +1,48 @@
-Nume:
-GrupÄƒ:
+Nume:Bute Dragoș-Cristian
+Grupă:332CA
 
-# Tema 1
- 
+## Tema 1
 
-Organizare
+# Descrierea generală
 -
-1. ExplicaÈ›ie pentru soluÈ›ia aleasÄƒ:
+** Producer **
+Producer-ul parcurge lista sa de produse iar pentru fiecare produs
+incearcă să îl introducă in market, repetand acest lucru de un numar de ori pentru fiecare produs.
+Dacă reușește trece mai departe după un timp predefinit per produs,
+iar daca nu, reincearcă dupa un alt timp stabilit la initializarea thread-ului
 
-***Obligatoriu:*** 
+** Consumer **
+Fiecare consumer parcurge coșurile sale, adaugând sau scoțând produse în/din acesta.
+Operatiile acestea sunt repetate de un numar de ori specific operației respective,
+consumer-ul fiind nevoit să aștepte o scurtă perioadă de timp dacă adăugarea în coș
+eșuează, similar producer-ului
 
+** Marketplace **
+Marketplace-ul coordonează interacțiunea dintre consumeri și produceri.
+Acesta înregistrează producătorii și le primește produsele pănă la o anumită
+limita per producător.
+Acesta de asemenea pune la dispoziția consumatorilor produsele din market, în același
+timp oferind consumatorilor coșurile necesare.
 
-* De fÄƒcut referinÈ›Äƒ la abordarea generalÄƒ menÈ›ionatÄƒ Ã®n paragraful de mai sus. Aici se pot bÄƒga bucÄƒÈ›i de cod/funcÈ›ii - etc.
-* Consideri cÄƒ tema este utilÄƒ?
-* Consideri implementarea naivÄƒ, eficientÄƒ, se putea mai bine?
-
-***OpÈ›ional:***
-
-
-* De menÈ›ionat cazuri speciale, nespecificate Ã®n enunÈ› È™i cum au fost tratate.
-
-
-Implementare
--
-
-* De specificat dacÄƒ Ã®ntregul enunÈ› al temei e implementat
-* DacÄƒ existÄƒ funcÈ›ionalitÄƒÈ›i extra, pe lÃ¢ngÄƒ cele din enunÈ› - descriere succintÄƒ + motivarea lor
-* De specificat funcÈ›ionalitÄƒÈ›ile lipsÄƒ din enunÈ› (dacÄƒ existÄƒ) È™i menÈ›ionat dacÄƒ testele reflectÄƒ sau nu acest lucru
-* DificultÄƒÈ›i Ã®ntÃ¢mpinate
-* Lucruri interesante descoperite pe parcurs
+* Este destul de lentă soluția din punctul meu de vedere însă trece testele
 
 
-Resurse utilizate
+# Implementare
 -
 
-* Resurse utilizate - toate resursele publice de pe internet/cÄƒrÈ›i/code snippets, chiar dacÄƒ sunt laboratoare de ASC
+* Toată tema a fost implementată
+* Cea mai grea parte a fost înțelegerea enunțului + deslușirea scheletului
 
-Git
+
+
+# Resurse utilizate
 -
-1. Link cÄƒtre repo-ul de git
+* Laboratoarele de ASC în general
+* Documentația Python
+* Probabil Stack Overflow însă nu țin minte exemple concrete
+
+
+
+# Git
+-
+https://github.com/dnbute/ASC-T1 - Momentan privat, îl fac public dupa deadline-ul hard
