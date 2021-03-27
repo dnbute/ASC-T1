@@ -20,12 +20,12 @@ class Marketplace:
         :param queue_size_per_producer: the maximum size of a queue associated with each producer
         """
         self.queue_size_per_producer = queue_size_per_producer
-        self.next_producer_id = -1 
+        self.next_producer_id = -1
         self.next_cart_id = -1
 
         self.producer_reg_lock = threading.Lock() # lock used for registering new producers
-        self.consumer_cart_lock = threading.Lock() # lock used for creating a new cart for a consumer
-        self.add_cart_locks = []# locks used for removing an element from the producer queue and adding to consumer cart
+        self.consumer_cart_lock = threading.Lock() # lock used for creating a new cart for consumers
+        self.add_cart_locks = [] # locks used for dealing with producer lists
 
         self.producer_queues = [] # a list queues for the producers
         self.consumer_carts = [] # a list of carts for the consumers
@@ -33,16 +33,16 @@ class Marketplace:
     def register_producer(self):
         """
         Returns an id for the producer that calls this.
+        We have to use a lock as to be sure that if two
+        threads call this method they dont get the same id.
         """
 
         with self.producer_reg_lock:
             self.next_producer_id += 1
-            self.producer_queues.append([])
-            self.add_cart_locks.append(threading.Lock())
+            self.producer_queues.append([]) # new empty list for the producer
+            self.add_cart_locks.append(threading.Lock()) # new lock for the producer
 
         return self.next_producer_id
-
-        
 
     def publish(self, producer_id, product):
         """
@@ -60,19 +60,20 @@ class Marketplace:
         if len(self.producer_queues[queue_id]) < self.queue_size_per_producer:
             self.producer_queues[queue_id].append(product)
             return True
-        else:
-            return False
-        
+        return False
 
     def new_cart(self):
         """
         Creates a new cart for the consumer
 
         :returns an int representing the cart_id
+
+        We have to use a lock as to be sure that if two
+        threads call this method they dont get the same id.
         """
         with self.consumer_cart_lock:
             self.next_cart_id += 1
-            self.consumer_carts.append([])
+            self.consumer_carts.append([]) # new empty list for the cart
 
         return self.next_cart_id
 
@@ -90,11 +91,16 @@ class Marketplace:
         """
 
         for i, prod_queue in enumerate(self.producer_queues):
-            with self.add_cart_locks[i]:
-                if product not in prod_queue:
-                    continue
-                else:
+            if product not in prod_queue:
+                pass
+            else:
+                # we use a lock when we found the product since
+                # we dont want two threads trying to remove an
+                # item at the same time
+                with self.add_cart_locks[i]:
                     prod_queue.remove(product)
+                    # Pair is used for knowing to which producer to return the item
+                    # in case the consumer decides to remove it from the cart
                     prod_producer_pair = (product, i)
                     self.consumer_carts[cart_id].append(prod_producer_pair)
                     return True
@@ -110,7 +116,7 @@ class Marketplace:
         :type product: Product
         :param product: the product to remove from cart
         """
-        i = -1
+        i = -1 # index of the producer to whom to return the product
 
         for prod, producer in self.consumer_carts[cart_id]:
             if prod == product:
@@ -118,7 +124,9 @@ class Marketplace:
                 break
         prod_producer_pair = (product, i)
         self.consumer_carts[cart_id].remove(prod_producer_pair)
-
+        # We use the same lock as the add_to_cart since both methods
+        # operate on the producer lists and we dont want two
+        # threads adding an item at the same time
         with self.add_cart_locks[i]:
             self.producer_queues[i].append(product)
 

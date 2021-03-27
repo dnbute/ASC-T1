@@ -6,8 +6,8 @@ Assignment 1
 March 2021
 """
 
-from threading import Thread, currentThread
-import time
+from threading import Thread
+from time import sleep
 
 
 class Consumer(Thread):
@@ -37,8 +37,6 @@ class Consumer(Thread):
         self.marketplace = marketplace
         self.retry_wait_time = retry_wait_time
         self.name = kwargs['name']
-        
-
 
     def run(self):
         for cart in self.carts:
@@ -49,13 +47,13 @@ class Consumer(Thread):
                 op_type = operation["type"]
                 op_prod = operation["product"]
                 op_qnt = operation["quantity"]
-                
+
                 while op_count < op_qnt:
                     if op_type == "add":
                         if self.marketplace.add_to_cart(cart_id, op_prod):
                             op_count += 1
                         else:
-                            time.sleep(self.retry_wait_time)
+                            sleep(self.retry_wait_time)
                     else:
                         self.marketplace.remove_from_cart(cart_id, op_prod)
                         op_count += 1
