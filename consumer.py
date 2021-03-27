@@ -6,7 +6,8 @@ Assignment 1
 March 2021
 """
 
-from threading import Thread
+from threading import Thread, currentThread
+import time
 
 
 class Consumer(Thread):
@@ -35,9 +36,29 @@ class Consumer(Thread):
         self.carts = carts
         self.marketplace = marketplace
         self.retry_wait_time = retry_wait_time
-        print(carts)
+        self.name = currentThread().getName()
         
 
 
     def run(self):
-        self.cart_id = self.marketplace.new_cart()
+        for cart in self.carts:
+            cart_id = self.marketplace.new_cart()
+
+            for operation in cart:
+                op_count = 0
+                op_type = operation["type"]
+                op_prod = operation["product"]
+                op_qnt = operation["quantity"]
+                
+                while op_count < op_qnt:
+                    if op_type == "add":
+                        if self.marketplace.add_to_cart(cart_id, op_prod):
+                            op_count += 1
+                        else:
+                            time.sleep(self.retry_wait_time)
+                    else:
+                        self.marketplace.remove_from_cart(cart_id, op_prod)
+                        op_count += 1
+            prod_list = self.marketplace.place_order(cart_id)
+            for prod in prod_list:
+                print(self.name + "bought" + prod)

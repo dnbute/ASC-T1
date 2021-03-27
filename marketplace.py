@@ -86,7 +86,7 @@ class Marketplace:
 
         :returns True or False. If the caller receives False, it should wait and then try again
         """
-        pass
+        return True
 
     def remove_from_cart(self, cart_id, product):
         """
@@ -107,4 +107,4 @@ class Marketplace:
         :type cart_id: Int
         :param cart_id: id cart
         """
-        pass
+        return []
