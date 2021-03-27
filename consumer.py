@@ -36,7 +36,7 @@ class Consumer(Thread):
         self.carts = carts
         self.marketplace = marketplace
         self.retry_wait_time = retry_wait_time
-        self.name = currentThread().getName()
+        self.name = kwargs['name']
         
 
 
@@ -61,4 +61,4 @@ class Consumer(Thread):
                         op_count += 1
             prod_list = self.marketplace.place_order(cart_id)
             for prod in prod_list:
-                print(self.name + "bought" + prod)
+                print(self.name + " bought " + str(prod))
