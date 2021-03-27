@@ -21,7 +21,7 @@ class Marketplace:
         """
         self.queue_size_per_producer = queue_size_per_producer
         self.next_producer_id = -1 
-        self.next_consumer_id = -1
+        self.next_cart_id = -1
 
         self.producer_reg_lock = threading.Lock() # lock used for registering new producers
         self.consumer_cart_lock = threading.Lock() # lock used for creating a new cart for a consumer
@@ -69,10 +69,10 @@ class Marketplace:
         :returns an int representing the cart_id
         """
         with self.consumer_cart_lock:
-            self.next_consumer_id += 1
+            self.next_cart_id += 1
             self.consumer_carts.append([])
 
-        return self.next_producer_id
+        return self.next_cart_id
 
     def add_to_cart(self, cart_id, product):
         """
