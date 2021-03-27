@@ -25,6 +25,7 @@ class Marketplace:
 
         self.producer_reg_lock = threading.Lock() # lock used for registering new producers
         self.consumer_cart_lock = threading.Lock() # lock used for creating a new cart for a consumer
+        self.add_cart_locks = []# locks used for removing an element from the producer queue and adding to consumer cart
 
         self.producer_queues = [] # a list queues for the producers
         self.consumer_carts = [] # a list of carts for the consumers
@@ -37,6 +38,7 @@ class Marketplace:
         with self.producer_reg_lock:
             self.next_producer_id += 1
             self.producer_queues.append([])
+            self.add_cart_locks.append(threading.Lock())
 
         return self.next_producer_id
 
@@ -86,7 +88,16 @@ class Marketplace:
 
         :returns True or False. If the caller receives False, it should wait and then try again
         """
-        return True
+
+        for i, prod_queue in enumerate(self.producer_queues):
+            with self.add_cart_locks[i]:
+                if product not in prod_queue:
+                    continue
+                else:
+                    prod_queue.remove(product)
+                    self.consumer_carts[cart_id].append(product)
+                    return True
+        return False
 
     def remove_from_cart(self, cart_id, product):
         """
@@ -98,7 +109,9 @@ class Marketplace:
         :type product: Product
         :param product: the product to remove from cart
         """
-        pass
+        self.consumer_carts[cart_id].remove(product)
+
+
 
     def place_order(self, cart_id):
         """
@@ -107,4 +120,4 @@ class Marketplace:
         :type cart_id: Int
         :param cart_id: id cart
         """
-        return []
+        return self.consumer_carts[cart_id]
