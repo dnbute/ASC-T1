@@ -3,7 +3,7 @@ Grupă: 332CA
 
 # Tema 1
 
-## Descrierea generală
+# Descrierea generală
 
 **Producer**
 -
@@ -27,13 +27,13 @@ limita per producător.
 Acesta de asemenea pune la dispoziția consumatorilor produsele din market, în același
 timp oferind consumatorilor coșurile necesare.
 
-## Implementare
+# Implementare
 
 * Toată tema a fost implementată
 * Cea mai grea parte a fost înțelegerea enunțului + deslușirea scheletului
 * Este destul de lentă soluția din punctul meu de vedere însă trece testele
 
-## Resurse utilizate
+# Resurse utilizate
 
 * Laboratoarele de ASC în general
 * Documentația Python
