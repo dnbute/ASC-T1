@@ -4,7 +4,7 @@ Grupă:332CA
 ## Tema 1
 
 # Descrierea generală
--
+
 ** Producer **
 Producer-ul parcurge lista sa de produse iar pentru fiecare produs
 incearcă să îl introducă in market, repetand acest lucru de un numar de ori pentru fiecare produs.
@@ -28,7 +28,7 @@ timp oferind consumatorilor coșurile necesare.
 
 
 # Implementare
--
+
 
 * Toată tema a fost implementată
 * Cea mai grea parte a fost înțelegerea enunțului + deslușirea scheletului
@@ -36,7 +36,7 @@ timp oferind consumatorilor coșurile necesare.
 
 
 # Resurse utilizate
--
+
 * Laboratoarele de ASC în general
 * Documentația Python
 * Probabil Stack Overflow însă nu țin minte exemple concrete
@@ -44,5 +44,5 @@ timp oferind consumatorilor coșurile necesare.
 
 
 # Git
--
-https://github.com/dnbute/ASC-T1 - Momentan privat, îl fac public dupa deadline-ul hard
+
+https://github.com/dnbute/ASC-T1 - Momentan privat, îl fac public după deadline-ul hard
