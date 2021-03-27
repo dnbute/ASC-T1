@@ -5,7 +5,7 @@ Computer Systems Architecture Course
 Assignment 1
 March 2021
 """
-
+import threading
 
 class Marketplace:
     """
@@ -20,18 +20,26 @@ class Marketplace:
         :param queue_size_per_producer: the maximum size of a queue associated with each producer
         """
         self.queue_size_per_producer = queue_size_per_producer
-        self.next_producer_id = -1
+        self.next_producer_id = -1 
         self.next_consumer_id = -1
-        self.producer_queues = []
-        self.consumer_carts = []
+
+        self.producer_reg_lock = threading.Lock() # lock used for registering new producers
+        self.consumer_cart_lock = threading.Lock() # lock used for creating a new cart for a consumer
+
+        self.producer_queues = [] # a list queues for the producers
+        self.consumer_carts = [] # a list of carts for the consumers
 
     def register_producer(self):
         """
         Returns an id for the producer that calls this.
         """
-        self.next_producer_id += 1
-        self.producer_queues.append([])
+
+        with self.producer_reg_lock:
+            self.next_producer_id += 1
+            self.producer_queues.append([])
+
         return self.next_producer_id
+
         
 
     def publish(self, producer_id, product):
@@ -46,8 +54,13 @@ class Marketplace:
 
         :returns True or False. If the caller receives False, it should wait and then try again.
         """
-
-        pass
+        queue_id = int(producer_id)
+        if len(self.producer_queues[queue_id]) < self.queue_size_per_producer:
+            self.producer_queues[queue_id].append(product)
+            return True
+        else:
+            return False
+        
 
     def new_cart(self):
         """
@@ -55,8 +68,10 @@ class Marketplace:
 
         :returns an int representing the cart_id
         """
-        self.next_consumer_id += 1
-        self.consumer_carts.append([])
+        with self.consumer_cart_lock:
+            self.next_consumer_id += 1
+            self.consumer_carts.append([])
+
         return self.next_producer_id
 
     def add_to_cart(self, cart_id, product):

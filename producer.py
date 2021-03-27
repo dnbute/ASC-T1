@@ -7,6 +7,7 @@ March 2021
 """
 
 from threading import Thread
+import time
 
 
 class Producer(Thread):
@@ -34,8 +35,20 @@ class Producer(Thread):
         Thread.__init__(self)
         self.products = products
         self.marketplace = marketplace
-        self.republish_wait_time = republish_wait_time        
+        self.republish_wait_time = republish_wait_time       
         
 
     def run(self):
         self.id = self.marketplace.register_producer()
+
+        while True:
+            for product, number_to_produce, wait_time_product in self.products:
+                products_published = 0
+
+                while products_published < number_to_produce:
+                    if self.marketplace.publish(str(self.id), product):
+                        products_published += 1
+                        time.sleep(wait_time_product)
+                    else:
+                        time.sleep(self.republish_wait_time)
+
