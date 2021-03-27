@@ -61,4 +61,4 @@ class Consumer(Thread):
                         op_count += 1
             prod_list = self.marketplace.place_order(cart_id)
             for prod in prod_list:
-                print(self.name + " bought " + str(prod))
+                print(self.name + " bought " + str(prod[0]))

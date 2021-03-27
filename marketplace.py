@@ -95,7 +95,8 @@ class Marketplace:
                     continue
                 else:
                     prod_queue.remove(product)
-                    self.consumer_carts[cart_id].append(product)
+                    prod_producer_pair = (product, i)
+                    self.consumer_carts[cart_id].append(prod_producer_pair)
                     return True
         return False
 
@@ -109,7 +110,17 @@ class Marketplace:
         :type product: Product
         :param product: the product to remove from cart
         """
-        self.consumer_carts[cart_id].remove(product)
+        i = -1
+
+        for prod, producer in self.consumer_carts[cart_id]:
+            if prod == product:
+                i = producer
+                break
+        prod_producer_pair = (product, i)
+        self.consumer_carts[cart_id].remove(prod_producer_pair)
+
+        with self.add_cart_locks[i]:
+            self.producer_queues[i].append(product)
 
 
 
